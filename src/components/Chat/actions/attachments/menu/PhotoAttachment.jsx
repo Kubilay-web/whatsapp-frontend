@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { PhotoIcon } from "../../../../../svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addFiles } from "../../../../../features/chatSlice";
 import { getFileType } from "../../../../../utils/file";
 
@@ -10,6 +10,7 @@ export default function PhotoAttachment() {
   const imageHandler = (e) => {
     let files = Array.from(e.target.files);
     files.forEach((file) => {
+      console.log(file.type);
       if (
         file.type !== "image/png" &&
         file.type !== "image/jpeg" &&

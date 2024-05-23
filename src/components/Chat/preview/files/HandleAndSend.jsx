@@ -19,11 +19,11 @@ function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
   const { token } = user;
   //send message handler
   const sendMessageHandler = async (e) => {
+    console.log(message, files);
     e.preventDefault();
     setLoading(true);
-    //uplaod files first
+
     const uploaded_files = await uploadFiles(files);
-    //send the message
     const values = {
       token,
       message,

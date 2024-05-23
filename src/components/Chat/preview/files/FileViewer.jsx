@@ -2,19 +2,31 @@ import { useSelector } from "react-redux";
 
 export default function FileViewer({ activeIndex }) {
   const { files } = useSelector((state) => state.chat);
+
+  // Check if files and the file at activeIndex exist
+  if (!files || !files[activeIndex]) {
+    return (
+      <div className="w-full max-w-[60%] flex justify-center items-center">
+        <h1 className="dark:text-dark_text_2 text-2xl">No file selected</h1>
+      </div>
+    );
+  }
+
+  const file = files[activeIndex];
+
   return (
     <div className="w-full max-w-[60%]">
-      {/*Container */}
+      {/* Container */}
       <div className="flex justify-center items-center">
-        {files[activeIndex].type === "IMAGE" ? (
+        {file.type === "IMAGE" ? (
           <img
-            src={files[activeIndex].fileData}
+            src={file.fileData}
             alt=""
             className="max-w-[80%] object-contain hview"
           />
-        ) : files[activeIndex].type === "VIDEO" ? (
+        ) : file.type === "VIDEO" ? (
           <video
-            src={files[activeIndex].fileData}
+            src={file.fileData}
             controls
             className="max-w-[80%] object-contain hview"
           ></video>
@@ -22,16 +34,16 @@ export default function FileViewer({ activeIndex }) {
           <div className="min-w-full hview flex flex-col items-center justify-center">
             {/* File Icon Image */}
             <img
-              src={`../../../../images/file/${files[activeIndex].type}.png`}
-              alt={files[activeIndex].type}
+              src={`../../../../images/file/${file.type}.png`}
+              alt={file.type}
             />
-            {/*No preview text*/}
+            {/* No preview text */}
             <h1 className="dark:text-dark_text_2 text-2xl">
               No preview available
             </h1>
-            {/*File size / type*/}
+            {/* File size / type */}
             <span className="dark:text-dark_text_2">
-              {files[activeIndex]?.file?.size} kB - {files[activeIndex]?.type}
+              {file.size} kB - {file.type}
             </span>
           </div>
         )}

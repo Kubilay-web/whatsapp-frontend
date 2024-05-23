@@ -7,6 +7,7 @@ import Input from "./Input";
 export default function FilesPreview() {
   const [message, setMessage] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  console.log("message----->", message);
   return (
     <div className="relative py-2 w-full flex items-center justify-center">
       {/*Container*/}

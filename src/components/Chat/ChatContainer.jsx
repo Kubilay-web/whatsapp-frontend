@@ -35,6 +35,7 @@ export default function ChatContainer({ onlineUsers, typing, callUser }) {
             user,
             activeConversation.users
           )}
+          callUser={callUser}
         />
         {files.length > 0 ? (
           <FilesPreview />

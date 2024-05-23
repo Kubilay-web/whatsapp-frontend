@@ -136,6 +136,21 @@ export const chatSlice = createSlice({
       state.conversations = newConvos;
     },
 
+    addFiles: (state, action) => {
+      state.files = [...state.files, action.payload];
+    },
+
+    clearFiles: (state, action) => {
+      state.files = [];
+    },
+
+    removeFileFromFiles: (state, action) => {
+      let index = action.payload;
+      let files = [...state.files];
+      let fileToRemove = [files[index]];
+      state.files = files.filter((file) => !fileToRemove.includes(file));
+    },
+
     // updateMessagesAndConversations: (state, action) => {
     //   //update messages
     //   let convo = state.activeConversation;
@@ -155,15 +170,6 @@ export const chatSlice = createSlice({
     // },
     // addFiles: (state, action) => {
     //   state.files = [...state.files, action.payload];
-    // },
-    // clearFiles: (state, action) => {
-    //   state.files = [];
-    // },
-    // removeFileFromFiles: (state, action) => {
-    //   let index = action.payload;
-    //   let files = [...state.files];
-    //   let fileToRemove = [files[index]];
-    //   state.files = files.filter((file) => !fileToRemove.includes(file));
     // },
   },
 

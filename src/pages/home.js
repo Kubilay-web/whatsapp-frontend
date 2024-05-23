@@ -26,12 +26,8 @@ function Home({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
-
-  useEffect(() => {
-    socket.emit("join", user._id);
-  }, [user]);
-
   const [onlineUsers, setOnlineUsers] = useState([]);
+  //call
   const [call, setCall] = useState(callData);
   const [stream, setStream] = useState();
   const [show, setShow] = useState(false);
@@ -44,20 +40,17 @@ function Home({ socket }) {
   //typing
   const [typing, setTyping] = useState(false);
   //join user into the socket io
-
   useEffect(() => {
     socket.emit("join", user._id);
-    console.log(user._id);
     //get online users
     socket.on("get-online-users", (users) => {
-      console.log("onlineUsers", users);
       setOnlineUsers(users);
     });
   }, [user]);
 
   //call
   useEffect(() => {
-    // setupMedia();
+    setupMedia();
     socket.on("setup socket", (id) => {
       setCall({ ...call, socketId: id });
     });
@@ -111,6 +104,7 @@ function Home({ socket }) {
     });
     connectionRef.current = peer;
   };
+
   //--answer call  funcion
   const answerCall = () => {
     enableMedia();
@@ -129,6 +123,7 @@ function Home({ socket }) {
     peer.signal(call.signal);
     connectionRef.current = peer;
   };
+
   //--end call  funcion
   const endCall = () => {
     setShow(false);
@@ -148,6 +143,7 @@ function Home({ socket }) {
 
   const enableMedia = () => {
     myVideo.current.srcObject = stream;
+    console.log(stream);
     setShow(true);
   };
   //get Conversations
@@ -156,19 +152,15 @@ function Home({ socket }) {
       dispatch(getConversations(user.token));
     }
   }, [user]);
-
   useEffect(() => {
+    //lsitening to receiving a message
     socket.on("receive message", (message) => {
       dispatch(updateMessagesAndConversations(message));
     });
-    socket.on("typing", () => {
-      setTyping(true);
-    });
-    socket.on("stop typing", () => {
-      setTyping(false);
-    });
+    //listening when a user is typing
+    socket.on("typing", (conversation) => setTyping(conversation));
+    socket.on("stop typing", () => setTyping(false));
   }, []);
-
   return (
     <>
       <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
